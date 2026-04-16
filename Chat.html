@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Registro de Notas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    background-color: #fafafa;
+    font-family: 'Times New Roman';
+    margin: 20px;
+}
+h1, h2 {
+    text-align: center;
+    background-color: #c9f1f1;
+    padding: 12px;
+    border-radius: 8px;
+}
+.seccion-notas {
+    max-width: 900px;
+    margin: auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+form {
+    display: grid;
+    gap: 15px;
+}
+button {
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.publicar { background:#0c4eb3; color:white; }
+.eliminar { background:#c62828; color:white; margin-top:10px; }
+.extra { background:#2e7d32; color:white; margin:5px; }
+.nota-item {
+    background:#f2f9ff;
+    border-left:6px solid #0c4eb3;
+    padding:15px;
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Registro de Notas</h1>
+
+<section class="seccion-notas">
+
+<form id="formNotas">
+<select id="curso" required>
+<option value="">Curso</option>
+<option>1ro Bachillerato</option>
+<option>2do Bachillerato</option>
+<option>3ro Bachillerato</option>
+</select>
+
+<select id="paralelo" required>
+<option value="">Paralelo</option>
+<option>A</option><option>B</option><option>C</option>
+</select>
+
+<input id="asignatura" placeholder="Asignatura" required>
+<input id="profesor" placeholder="Profesor" required>
+<input id="estudiante" placeholder="Estudiante (opcional)">
+<textarea id="notaEstudiante" placeholder="Nota del estudiante"></textarea>
+<textarea id="notaCurso" placeholder="Nota general del curso"></textarea>
+
+<button class="publicar" type="submit">PUBLICAR</button>
+</form>
+
+<h2>Notas</h2>
+<div id="listaNotas"></div>
+
+<button class="extra" onclick="descargarNotas()">⬇ DESCARGAR NOTAS</button>
+<input type="file" id="archivoNotas" hidden onchange="cargarArchivo(event)">
+<button class="extra" onclick="document.getElementById('archivoNotas').click()">⬆ CARGAR NOTAS</button>
+
+</section>
+
+<script>
+const PASSWORD = "UEEOE2026";
+let notas = JSON.parse(localStorage.getItem("notas")) || [];
+const lista = document.getElementById("listaNotas");
+
+function mostrarNotas(){
+    lista.innerHTML="";
+    notas.forEach((n,i)=>{
+        const d=document.createElement("div");
+        d.className="nota-item";
+        d.innerHTML = `
+        <strong>${n.curso} - ${n.paralelo}</strong><br>
+        <strong>${n.asignatura}</strong><br>
+        Profesor: ${n.profesor}<br><br>
+        ${n.contenido}
+        <button class="eliminar" onclick="eliminar(${i})">🗑 Eliminar</button>
+        `;
+        lista.appendChild(d);
+    });
+    localStorage.setItem("notas", JSON.stringify(notas));
+}
+
+function eliminar(i){
+    const p=prompt("Contraseña:");
+    if(p!==PASSWORD) return alert("❌ Incorrecta");
+    notas.splice(i,1);
+    mostrarNotas();
+}
+
+formNotas.onsubmit=e=>{
+    e.preventDefault();
+    let contenido = notaCurso.value
+        ? `<b>Nota general:</b><br>${notaCurso.value}`
+        : `<b>Estudiante:</b> ${estudiante.value}<br>${notaEstudiante.value}`;
+
+    notas.push({
+        curso:curso.value,
+        paralelo:paralelo.value,
+        asignatura:asignatura.value,
+        profesor:profesor.value,
+        contenido
+    });
+    formNotas.reset();
+    mostrarNotas();
+};
+
+function descargarNotas(){
+    const blob=new Blob([JSON.stringify(notas)],{type:"application/json"});
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="notas.json";
+    a.click();
+}
+
+function cargarArchivo(e){
+    const r=new FileReader();
+    r.onload=()=>{ notas=JSON.parse(r.result); mostrarNotas(); };
+    r.readAsText(e.target.files[0]);
+}
+
+mostrarNotas();
+</script>
+
+</body>
+</html>

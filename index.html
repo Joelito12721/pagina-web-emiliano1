@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMILIANO ORTEGA ESPINOZA</title>
+  <link rel="icon" type="image/x-icon" href="Iconos/EMILIANO UE.gif">
+  <link rel="stylesheet" href="CSS/estilos.css">
+</head>
+
+<body>
+
+<div class="page-container">
+
+  <div class="main-content">
+
+    <!-- ENCABEZADO -->
+    <div class="header">
+      <img src="Imágenes/encabezado.png" alt="ENCABEZADO">
+    </div>
+
+    <!-- MENÚ -->
+    <nav>
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+
+        <li>
+          <a href="#">Identidad</a>
+          <ul>
+            <li><a href="Misión.html">Misión</a></li>
+            <li><a href="Visión.html">Visión</a></li>
+            <li><a href="Historia.html">Historia</a></li>
+            <li><a href="Símbolos.html">Símbolos</a></li>
+            <li><a href="Uniforme.html">Uniforme</a></li>
+          </ul>
+        </li>
+
+        <li>
+          <a href="#">Oferta Educativa</a>
+          <ul>
+            <li><a href="Escuela.html">Escuela</a></li>
+            <li><a href="Básica.html">Básica Superior</a></li>
+            <li><a href="Bachillerato.html">Bachillerato</a></li>
+          </ul>
+        </li>
+
+        <li><a href="Infraestructura.html">Infraestructura</a></li>
+        <li><a href="Noticias.html">Noticias</a></li>
+        <li><a href="Chat.html">Chat</a></li>
+      </ul>
+    </nav>
+
+    <!-- SLIDER CENTRADO -->
+    <div class="slider-wrapper">
+
+      <div class="slider-container">
+
+        <div class="slide active">
+          <div class="img-box">
+            <img src="Imágenes/slider1.jpg" alt="Imagen 1">
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="img-box">
+            <img src="Imágenes/slider2.jpg" alt="Imagen 2">
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="img-box">
+            <img src="Imágenes/slider3.jpg" alt="Imagen 3">
+          </div>
+        </div>
+
+        <div class="slide">
+          <div class="img-box">
+            <img src="Imágenes/slider4.jpg" alt="Imagen 4">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CONTROLES -->
+      <div class="controls">
+        <span class="control active" onclick="changeSlide(0)"></span>
+        <span class="control" onclick="changeSlide(1)"></span>
+        <span class="control" onclick="changeSlide(2)"></span>
+        <span class="control" onclick="changeSlide(3)"></span>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>📍 Dirección: 18 de Agosto entre Olmedo y Eugenio Espejo, Catamayo, Ecuador</p>
+    <p>📧 Correo: <a href="mailto:11h01466@gmail.com">11h01466@gmail.com</a></p>
+    <p>📞 Teléfono: (07) 267-7046</p>
+    <p>📘 Facebook:
+      <a href="https://www.facebook.com/EmilianoOrtegaEspinoza" target="_blank">
+        Unidad Educativa Emiliano Ortega Espinoza
+      </a>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const controls = document.querySelectorAll('.control');
+  let currentSlide = 0;
+
+  function changeSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === index);
+      controls[i].classList.toggle('active', i === index);
+    });
+    currentSlide = index;
+  }
+
+  setInterval(() => {
+    currentSlide = (currentSlide + 1) % slides.length;
+    changeSlide(currentSlide);
+  }, 3000);
+</script>
+
+</body>
+</html>
